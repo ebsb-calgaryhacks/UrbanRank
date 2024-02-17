@@ -1,3 +1,5 @@
+import call_calgary
+
 from flask import Flask, request, render_template, Response
 from flask_cors import CORS, cross_origin
 
@@ -6,13 +8,10 @@ from sodapy import Socrata
 
 from dotenv import load_dotenv
 import os
-load_dotenv("./.env")
 
 app = Flask(__name__)
 
 CORS(app)
-
-client = Socrata("data.calgary.ca", os.environ.get("OPEN_API_KEY"))
 
 @app.route("/")
 def hello_world():
@@ -20,6 +19,6 @@ def hello_world():
 
 @app.route("/everything")
 def everything():
-    results = client.get("xeek-u7v8", limit = 3000)
+    results = call_calgary.call_calgary_api()
 
     return {'length': len(results)}
