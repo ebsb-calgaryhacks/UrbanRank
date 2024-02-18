@@ -33,14 +33,22 @@ def getCommunityScores():
     Endpoint for the frontend - returns an overall score for each community
     """
     # Retrieve indicators from query parameters
-    indicators = request.args.getlist('indicators')
+    print(request)
+    indicator_keys = request.args.keys()
+    
+    indicators_dict = {}
+    for key in indicator_keys:
+        print(key)
+        indicators_dict[key] = request.args.getlist(key)
+
 
     # Process indicators as needed
-    indicators_dict = {}
-    for indicator in indicators:
-        indicator_name, indicator_score = indicator.split(':')
-        indicators_dict[indicator_name] = float(indicator_score)
+    # indicators_dict = {}
+    # for indicator in indicators:
+    #     indicator_name, indicator_score = indicator.split(':')
+    #     indicators_dict[indicator_name] = float(indicator_score)
 
+    print(indicators_dict.items())
     # Assuming the rest of your logic remains the same...
     df = call_calgary.get_data(list(indicators_dict.keys()))
     status_mapping = {
@@ -59,6 +67,7 @@ def getCommunityScores():
         total_max_score += (indicator_score * 0.1) * 100
         length +=1
 
+    print(df)
     # Multiply each status number by the corresponding indicator score
     df['weighted_status'] = df.apply(lambda row: row['status'] * indicators_dict[row['indicator']] * 0.1, axis=1)
     
