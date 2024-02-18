@@ -16,7 +16,6 @@ async function initMap() {
             zoom: 5,
         })        
     }
-    let res = getBoundaries()
 }
 
 /**
