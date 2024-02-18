@@ -48,7 +48,6 @@ def getCommunityScores():
     #     indicator_name, indicator_score = indicator.split(':')
     #     indicators_dict[indicator_name] = float(indicator_score)
 
-    print(indicators_dict.items())
     # Assuming the rest of your logic remains the same...
     df = call_calgary.get_data(list(indicators_dict.keys()))
     status_mapping = {
@@ -64,12 +63,14 @@ def getCommunityScores():
     length = 0
 
     for indicator_name, indicator_score in indicators_dict.items():
-        total_max_score += (indicator_score * 0.1) * 100
+        print(f"Score: {indicator_score}")
+        total_max_score += (int(indicator_score[0]) * 0.1) * 100
         length +=1
 
     print(df)
+    print(indicators_dict["WALK SCORE"])
     # Multiply each status number by the corresponding indicator score
-    df['weighted_status'] = df.apply(lambda row: row['status'] * indicators_dict[row['indicator']] * 0.1, axis=1)
+    df['weighted_status'] = df.apply(lambda row: row['status'] * int(indicators_dict[row['indicator']][0]) * 0.1, axis=1)
     
     # Sum up the weighted status numbers by community
     community_weighted_status = df.groupby('communities')['weighted_status'].sum()
