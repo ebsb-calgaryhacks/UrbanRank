@@ -22,7 +22,7 @@ async function initMap() {
     boundaries = temp.boundaries
 
     for (const [key, coords] of Object.entries(boundaries)) {
-      
+
       drawPolygon(coords, "#FF0000")
     }
   }
@@ -38,13 +38,16 @@ const drawPolygon = (coords, colour) => {
     const lat = Number(point[1])
     const lng = Number(point[0])
 
+    if (isNaN(lat) || isNaN(lng)) {
+      console.log(lat, lng, point[1], point[0]);
+      
+    }
+
     return {
-      lat: isNaN(lat) ? 0 : lat,
-      lng: isNaN(lng) ? 0 : lng
+      lat: lat,
+      lng: lng
     }
   })
-
-  console.log(res);
 
 
 
