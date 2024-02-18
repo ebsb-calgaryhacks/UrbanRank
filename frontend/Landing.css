@@ -27,13 +27,13 @@
   text-align: center;
   padding: 17px 48px;
   color: #fff;
-  background-color: #379e4f;
+  background-color: #007bff;
   height: 48px;
   }
   
 .BestButton:hover{
     transform: scale(1.04);
-    background-color: #379e4f;
+    background-color: #007bff;
 }
 
 article{
@@ -65,7 +65,7 @@ article{
 }
 
 footer{
-  background-color: #379e4f;
+  background-color: #007bff;
   padding: 20px;
   text-align: center;
   color: white;
@@ -75,7 +75,7 @@ footer{
 }
 
 header{
-    background-color: #379e4f;
+    background-color: #007bff;
     padding: 1px;
     text-align: center;
     color: white;
