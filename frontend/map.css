@@ -2,30 +2,52 @@
  * Always set the map height explicitly to define the size of the div element
  * that contains the map. 
  */
- #map {
-    height: 100%;
-  }
-  
-  /* 
+#map {
+  height: 100%;
+}
+
+/* 
    * Optional: Makes the sample page fill the window. 
    */
-  html,
-  body {
-    height: 100%;
-    margin: 0;
-    padding: 0;
-  }
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
 
-  #legend {
-    font-family: Arial, sans-serif;
-    background: #fff;
-    padding: 10px;
-    margin: 10px;
-    /* border: 1px solid #000; */
-    border-radius: 5px;
-    box-shadow: 2px 2px 2px 1px rgb(0 0 0 / 20%);
-  }
+#legend {
+  font-family: Arial, sans-serif;
+  background: #fff;
+  padding: 10px;
+  margin: 10px;
+  /* border: 1px solid #000; */
+  border-radius: 5px;
+  box-shadow: 2px 2px 2px 1px rgb(0 0 0 / 20%);
+}
 
-  #legend > div {
-    
-  }
+#map-home-button {
+  position: fixed;
+  bottom: 100px;
+  left: 100px; 
+  background-color: #007bff;
+  height: 70px;
+  width: 70px;
+  border-radius: 25px;
+  box-shadow: 2px 2px 2px 2px rgb(0 0 0/ 20%);
+  transition: 0.2s;
+}
+
+#map-home-button:hover {
+  background-color: #00b7ff;
+}
+
+.material-symbols-outlined {
+  color: white;
+}
+
+#map-home-button-icon {
+  position: absolute;
+  left: 24px;
+  top: 21px;
+}
