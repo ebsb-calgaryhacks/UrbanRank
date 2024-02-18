@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Feedback Form</title>
+    <title>Community Qualities</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <style>
@@ -27,8 +27,8 @@
 </head>
 <body>
     <div class="container mt-5">
-        <h1>Feedback Form</h1>
-        <p id="explanation">Please select the features you want to search by:</p>
+        <h1>Community Qualities</h1>
+        <p id="explanation">Please select the qualities you want to search for:</p>
 
         <div id="filterOptions" class="mb-3">
             <div class="btn-group-toggle" data-toggle="buttons">
@@ -42,11 +42,31 @@
                 </label>
                 <label class="btn btn-outline-primary">
                     <input type="checkbox" autocomplete="off">
-                    Green Space
+                    Green Spaces
                 </label>
                 <label class="btn btn-outline-primary">
                     <input type="checkbox" autocomplete="off">
                     Bike Paths
+                </label>
+                <label class="btn btn-outline-primary">
+                    <input type="checkbox" autocomplete="off">
+                    Safety
+                </label>
+                <label class="btn btn-outline-primary">
+                    <input type="checkbox" autocomplete="off">
+                    Affordability
+                </label>
+                <label class="btn btn-outline-primary">
+                    <input type="checkbox" autocomplete="off">
+                    Elementary School
+                </label>
+                <label class="btn btn-outline-primary">
+                    <input type="checkbox" autocomplete="off">
+                    Junior High School 
+                </label>
+                <label class="btn btn-outline-primary">
+                    <input type="checkbox" autocomplete="off">
+                    High School
                 </label>
             </div>
             <!-- Add more filter options as needed -->
@@ -109,7 +129,7 @@
                 rankingForm.style.display = "block";
 
                 // Show the explanation for rating the features
-                explanation.innerText = "Please rate the selected features on a scale of 1 to 5, where 1 is the least important and 5 is very important to you.";
+                explanation.innerText = "Please rate the selected qualities on a scale of 1 to 5, where 1 is the least important and 5 is very important to you.";
 
                 // Fade in the new explanation text
                 explanation.style.opacity = "1";
