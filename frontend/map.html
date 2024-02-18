@@ -1,0 +1,71 @@
+<html>
+  <head>
+    <title>Simple Map</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+
+    <link rel="stylesheet" type="text/css" href="./map.css" />
+    <script type="module" src="./index.js"></script>
+  </head>
+  <body>
+    <div id="map"></div>
+
+
+    <!-- script for getting url info -->
+    <script>
+      function getUrlParams() {
+          var searchParams = new URLSearchParams(window.location.search);
+          var params = {};
+          for (let param of searchParams.entries()) {
+              params[param[0]] = param[1];
+          }
+          return params;
+      }
+
+      var urlParams = getUrlParams();
+      
+      // Initialize JSON object
+      var jsonData = {
+          "indicators": [],
+          "quadrant": "NW"
+      };
+
+      // Add indicators to JSON data if provided in URL
+      if (urlParams['Walkability']) {
+          jsonData.indicators.push({ "indicator_name": "WALK SCORE", "indicator_score": urlParams['Walkability'] });
+      }
+      if (urlParams['PublicTransportation']) {
+          jsonData.indicators.push({ "indicator_name": "TRANSIT SCORE", "indicator_score": urlParams['PublicTransportation'] });
+      }
+      if (urlParams['GreenSpaces']) {
+          jsonData.indicators.push({ "indicator_name": "GREEN SPACE AREA", "indicator_score": urlParams['GreenSpaces'] });
+      }
+      if (urlParams['BikePaths']) {
+          jsonData.indicators.push({ "indicator_name": "BIKE SCORE", "indicator_score": urlParams['BikePaths'] });
+      }
+      if (urlParams['Safety']) {
+          jsonData.indicators.push({ "indicator_name": "PROPERTY CRIME RATE", "indicator_score": urlParams['Safety'] });
+      }
+      if (urlParams['Affordability']) {
+          jsonData.indicators.push({ "indicator_name": "LOW INCOME", "indicator_score": urlParams['Affordability'] });
+      }
+      if (urlParams['ElementarySchool']) {
+          jsonData.indicators.push({ "indicator_name": "ELEMENTARY SCHOOL", "indicator_score": urlParams['ElementarySchool'] });
+      }
+      if (urlParams['JuniorHighSchool']) {
+          jsonData.indicators.push({ "indicator_name": "JUNIOR HIGH SCHOOL", "indicator_score": urlParams['JuniorHighSchool'] });
+      }
+      if (urlParams['HighSchool']) {
+          jsonData.indicators.push({ "indicator_name": "HIGH SCHOOL", "indicator_score": urlParams['HighSchool'] });
+      }
+
+      // Convert JSON object to string for sending to API
+      var jsonString = JSON.stringify(jsonData);
+      console.log(jsonString); // send this JSON string to the API
+    </script>
+
+
+    <!-- prettier-ignore -->
+    <script>(g=>{var h,a,k,p="The Google Maps JavaScript API",c="google",l="importLibrary",q="__ib__",m=document,b=window;b=b[c]||(b[c]={});var d=b.maps||(b.maps={}),r=new Set,e=new URLSearchParams,u=()=>h||(h=new Promise(async(f,n)=>{await (a=m.createElement("script"));e.set("libraries",[...r]+"");for(k in g)e.set(k.replace(/[A-Z]/g,t=>"_"+t[0].toLowerCase()),g[k]);e.set("callback",c+".maps."+q);a.src=`https://maps.${c}apis.com/maps/api/js?`+e;d[q]=f;a.onerror=()=>h=n(Error(p+" could not load."));a.nonce=m.querySelector("script[nonce]")?.nonce||"";m.head.append(a)}));d[l]?console.warn(p+" only loads once. Ignoring:",g):d[l]=(f,...n)=>r.add(f)&&u().then(()=>d[l](f,...n))})
+        ({key: "AIzaSyBv91Fo7vTRc75VArmi9GvSa9q1q3YotRI", v: "weekly"});</script>
+  </body>
+</html>
