@@ -5,7 +5,6 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "front": "parcel index.html",
     "back": "cd ../backend && flask --app main run"
   },
   "author": "",
