@@ -4,13 +4,28 @@ from sodapy import Socrata
 from dotenv import load_dotenv
 import os
 
-load_dotenv("./.env")
+load_dotenv("./backend/.env")
 
 client = Socrata("data.calgary.ca", os.environ.get("MyAppToken"))
 
-def call_calgary_api():
+def call_calgary_api(**kwargs):
     endpoint = "xeek-u7v8"
 
-    query = endpoint
+    return client.get(endpoint, **kwargs, limit = 3000)
 
-    return client.get(query, limit = 3000)
+def get_data(indicators):
+    where = ""
+    for indicator in indicators:
+        where += f"INDICATOR='{indicator}' OR "
+    
+    where = where[:-4]
+
+    data = pd.DataFrame.from_records(call_calgary_api(where = where))
+
+    return data[["communities", "indicator", "value"]]
+
+
+if __name__ == '__main__':
+    #results = call_calgary_api(where = "INDICATOR='LOW INCOME' OR INDICATOR='BIKE SCORE'")
+    results = get_data(["BIKE SCORE"])
+    print(results)
