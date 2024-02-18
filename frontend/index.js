@@ -8,7 +8,7 @@ async function initMap() {
             [lat, lng] = [geolocation.coords.latitude, geolocation.coords.longitude]
 
             map = await new Map(document.getElementById("map"), {
-                center: { lat: 24.886, lng: -70.268 },
+                center: { lat: lat, lng: lng },
                 zoom: 5,
             })
         })
