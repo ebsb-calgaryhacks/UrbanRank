@@ -27,17 +27,29 @@ def everything():
     return {'length': len(results)}
 
 
-@app.route("/getCommunityScores", methods=['POST'])
+@app.route("/getCommunityScores", methods=['GET'])
 def getCommunityScores():
     """
     Endpoint for the frontend - returns an overall score for each community
     """
-    request_data = request.get_json()
+    # Retrieve indicators from query parameters
+    print(request)
+    indicator_keys = request.args.keys()
     
-    indicators_dict = {indicator['indicator_name']: indicator['indicator_score'] for indicator in request_data['indicators']}
+    indicators_dict = {}
+    for key in indicator_keys:
+        print(key)
+        indicators_dict[key] = request.args.getlist(key)
 
+
+    # Process indicators as needed
+    # indicators_dict = {}
+    # for indicator in indicators:
+    #     indicator_name, indicator_score = indicator.split(':')
+    #     indicators_dict[indicator_name] = float(indicator_score)
+
+    # Assuming the rest of your logic remains the same...
     df = call_calgary.get_data(list(indicators_dict.keys()))
-
     status_mapping = {
         'Between benchmark and target': 50,
         'At or below benchmark': 0,
@@ -51,11 +63,13 @@ def getCommunityScores():
     length = 0
 
     for indicator_name, indicator_score in indicators_dict.items():
-        total_max_score += (indicator_score * 0.1) * 100
+        print(f"Score: {indicator_score}")
+        total_max_score += (int(indicator_score[0]) * 0.1) * 100
         length +=1
 
+    print(df)
     # Multiply each status number by the corresponding indicator score
-    df['weighted_status'] = df.apply(lambda row: row['status'] * indicators_dict[row['indicator']] * 0.1, axis=1)
+    df['weighted_status'] = df.apply(lambda row: row['status'] * int(indicators_dict[row['indicator']][0]) * 0.1, axis=1)
     
     # Sum up the weighted status numbers by community
     community_weighted_status = df.groupby('communities')['weighted_status'].sum()
