@@ -1,15 +1,143 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Feedback Form</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Animation */
+        .fadeIn {
+            animation: fadeInAnimation 0.5s ease-in-out forwards;
+        }
+        @keyframes fadeInAnimation {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+        /* Fade effect for explanation text */
+        #explanation {
+            transition: opacity 0.5s ease-in-out;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <h1>Feedback Form</h1>
+        <p id="explanation">Please select the features you want to search by:</p>
 
-    <link rel="stylesheet" type="text/css" href="style.css" />
-    <meta charset="utf-8" />
+        <div id="filterOptions" class="mb-3">
+            <div class="btn-group-toggle" data-toggle="buttons">
+                <label class="btn btn-outline-primary">
+                    <input type="checkbox" autocomplete="off">
+                    Public Transportation
+                </label>
+                <label class="btn btn-outline-primary">
+                    <input type="checkbox" autocomplete="off">
+                    Walkability
+                </label>
+                <label class="btn btn-outline-primary">
+                    <input type="checkbox" autocomplete="off">
+                    Green Space
+                </label>
+                <label class="btn btn-outline-primary">
+                    <input type="checkbox" autocomplete="off">
+                    Bike Paths
+                </label>
+            </div>
+            <!-- Add more filter options as needed -->
+            <button id="nextBtn" class="btn btn-primary mt-3">Next</button>
+        </div>
 
-    <script src="index.js"></script>
-  </head>
-  <body>
+        <!-- Form for ranking features -->
+        <form id="rankingForm" action="submit_feedback.php" method="post" style="display: none;">
+            <div id="rankingQuestions">
+                <!-- Ranking questions will be dynamically generated here -->
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
 
-  
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        document.getElementById("nextBtn").addEventListener("click", function() {
+            // Hide filter options and explanation text with fade-out animation
+            var filterOptions = document.getElementById("filterOptions");
+            filterOptions.style.transition = "opacity 0.5s ease-in-out";
+            filterOptions.style.opacity = "0";
 
-  </body>
+            var explanation = document.getElementById("explanation");
+            explanation.style.transition = "opacity 0.5s ease-in-out";
+            explanation.style.opacity = "0";
+
+            // Get selected filter options
+            var selectedFilters = [];
+            var checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
+            checkboxes.forEach(function(checkbox) {
+                selectedFilters.push(checkbox.parentNode.textContent.trim()); // Get the text content of the label
+            });
+
+            // Generate ranking questions based on selected filters
+            var rankingQuestionsHTML = '';
+            selectedFilters.forEach(function(filter) {
+                rankingQuestionsHTML += '<div class="form-group">';
+                rankingQuestionsHTML += '<label>' + filter + '</label><br>'; // Display filter name
+                rankingQuestionsHTML += '<div class="btn-group" role="group" aria-label="' + filter + '">';
+                for (var i = 1; i <= 5; i++) {
+                    var id = filter.replace(/\s+/g, '') + '_option' + i; // Generate unique id
+                    rankingQuestionsHTML += '<input type="radio" class="btn-check" name="' + filter + '" id="' + id + '" value="' + i + '" autocomplete="off">';
+                    rankingQuestionsHTML += '<label class="btn btn-outline-primary" for="' + id + '">' + i + '</label>';
+                }
+                rankingQuestionsHTML += '</div></div>';
+            });
+
+            // After a short delay, toggle the display of filter options and rating form
+            setTimeout(function() {
+                // Hide filter options
+                filterOptions.style.display = "none";
+
+                // Show ranking form with fade-in animation
+                var rankingForm = document.getElementById("rankingForm");
+                rankingForm.classList.add('fadeIn');
+                rankingForm.style.display = "block";
+
+                // Show the explanation for rating the features
+                explanation.innerText = "Please rate the selected features on a scale of 1 to 5, where 1 is the least important and 5 is very important to you.";
+
+                // Fade in the new explanation text
+                explanation.style.opacity = "1";
+
+                // Add generated ranking questions to the form
+                document.getElementById('rankingQuestions').innerHTML = rankingQuestionsHTML;
+            }, 500); // Adjust this value to match the transition duration
+        });
+        document.getElementById("rankingForm").addEventListener("submit", function(event) {
+        event.preventDefault(); // Prevent form submission
+        
+        // Get selected filter options and their corresponding values
+        var queryParams = new URLSearchParams();
+        var checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
+        checkboxes.forEach(function(checkbox) {
+            var filter = checkbox.parentNode.textContent.trim();
+            var radioButtons = document.querySelectorAll('input[type="radio"][name="' + filter + '"]:checked');
+            if (radioButtons.length > 0) {
+                queryParams.append(filter.replace(/\s+/g, ''), radioButtons[0].value);
+            }
+        });
+
+        // Construct URL with query parameters
+        var url = 'map.html?' + queryParams.toString();
+
+        // Navigate to map.html page with query parameters
+        window.location.href = url;
+    });
+    </script>
+</body>
 </html>
