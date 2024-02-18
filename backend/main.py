@@ -27,17 +27,22 @@ def everything():
     return {'length': len(results)}
 
 
-@app.route("/getCommunityScores", methods=['POST'])
+@app.route("/getCommunityScores", methods=['GET'])
 def getCommunityScores():
     """
     Endpoint for the frontend - returns an overall score for each community
     """
-    request_data = request.get_json()
-    
-    indicators_dict = {indicator['indicator_name']: indicator['indicator_score'] for indicator in request_data['indicators']}
+    # Retrieve indicators from query parameters
+    indicators = request.args.getlist('indicators')
 
+    # Process indicators as needed
+    indicators_dict = {}
+    for indicator in indicators:
+        indicator_name, indicator_score = indicator.split(':')
+        indicators_dict[indicator_name] = float(indicator_score)
+
+    # Assuming the rest of your logic remains the same...
     df = call_calgary.get_data(list(indicators_dict.keys()))
-
     status_mapping = {
         'Between benchmark and target': 50,
         'At or below benchmark': 0,
