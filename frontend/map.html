@@ -1,27 +1,24 @@
 <html>
 <head>
     <title>Simple Map</title>
-    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
-
     <link rel="stylesheet" type="text/css" href="./map.css" />
-    <script type="module" src="./index.js"></script>
-</head>
-<body>
-<div id="map"></div>
 
-<!-- script for getting url info -->
-<script>
-    function getUrlParams() {
-        var searchParams = new URLSearchParams(window.location.search);
-        var params = {};
-        for (let param of searchParams.entries()) {
-            params[param[0]] = param[1];
-        }
-        return params;
-    }
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+    <script type="module" src="./map.js"></script>
+    <!-- script for getting url info -->
+    <script>
+      function getUrlParams() {
+          var searchParams = new URLSearchParams(window.location.search);
+          var params = {};
+          for (let param of searchParams.entries()) {
+              params[param[0]] = param[1];
+          }
+          return params;
+      }
 
     var urlParams = getUrlParams();
     var queryParams = '';
+
 
     // Add indicators to query parameters if provided in URL
     if (urlParams['Walkability']) {

@@ -115,6 +115,30 @@ def close_schools(point, schools, grade):
 
     return closest
 
+def close_school_values(grade):
+    """
+    grade: string of the grades offered by the school. Either 'elem', 'junior_h', or 'senior_h'
+
+    returns a dictionary with community names and a score for school proximity, from 0-100
+    """
+    communities = get_community_points()
+
+    schools = get_schools()
+    
+    values_dict = {}
+    for index, row in communities.iterrows():
+        point = (float(row['latitude']), float(row['longitude']))
+        closest_schools = close_schools(point, schools, grade)
+        distance_sum = closest_schools[0][1] + closest_schools[1][1] + closest_schools[2][1]
+
+        values_dict[row['name']] = (1 - distance_sum/20) * 100
+
+    
+    return values_dict
+
+
+
+
 if __name__ == '__main__':
     # results = call_calgary_api(where = "INDICATOR='LOW INCOME' OR INDICATOR='BIKE SCORE'")
     # results = get_data(["BIKE SCORE"])
@@ -133,4 +157,6 @@ if __name__ == '__main__':
     # print(community_point)
     # print(closest)
 
-    get_community_geometry()
+    # get_community_geometry()
+
+    close_school_values('elem')
