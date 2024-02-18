@@ -6,7 +6,7 @@ import haversine as hs
 from dotenv import load_dotenv
 import os
 
-load_dotenv("./backend/.env")
+load_dotenv(".env")
 
 client = Socrata("data.calgary.ca", os.environ.get("MyAppToken"))
 
@@ -30,7 +30,7 @@ def get_data(indicators):
 
     data = pd.DataFrame.from_records(call_calgary_api("xeek-u7v8", where = where))
 
-    return data[["communities", "indicator", "value"]]
+    return data[["communities", "indicator", "status", "quadrant"]]
 
 def get_community_points():
     """
@@ -43,7 +43,24 @@ def get_community_points():
 
 def get_community_geometry():
     """
+    returns dictionary of the following format:
+    {
+       community: [
+            [latitude, longitude],
+            [latitude, longitude],
+            ...
+            ]
+       ],
+       community: [
+            [latitude, longitude],
+            [latitude, longitude],
+            ...
+            ]
+       ],
+       ...
+    }
 
+    Which is the location points of the polygons for the boundaries of the communities in Calgary
     """
 
     data = pd.read_csv('./Community_District_Boundaries_20240217.csv')
@@ -78,7 +95,11 @@ def get_schools():
     return data[["name", "elem", "junior_h", "senior_h", "longitude", "latitude"]]
 
 def close_schools(point, schools, grade):
-
+    """
+    point: tuple of two floats, (latitude, longitude)
+    schools: pandas dataframe of schools data from get_schools
+    grade: string of grade range searched for, either 'elem', 'junior_h', 'senior_h' 
+    """
     closest = []
 
     for index, row in schools.iterrows():
