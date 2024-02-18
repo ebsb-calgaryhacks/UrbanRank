@@ -87,57 +87,75 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <script>
-        document.getElementById("nextBtn").addEventListener("click", function() {
-            // Hide filter options and explanation text with fade-out animation
-            var filterOptions = document.getElementById("filterOptions");
-            filterOptions.style.transition = "opacity 0.5s ease-in-out";
-            filterOptions.style.opacity = "0";
-
-            var explanation = document.getElementById("explanation");
-            explanation.style.transition = "opacity 0.5s ease-in-out";
-            explanation.style.opacity = "0";
-
-            // Get selected filter options
-            var selectedFilters = [];
-            var checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
-            checkboxes.forEach(function(checkbox) {
-                selectedFilters.push(checkbox.parentNode.textContent.trim()); // Get the text content of the label
-            });
-
-            // Generate ranking questions based on selected filters
-            var rankingQuestionsHTML = '';
-            selectedFilters.forEach(function(filter) {
-                rankingQuestionsHTML += '<div class="form-group">';
-                rankingQuestionsHTML += '<label>' + filter + '</label><br>'; // Display filter name
-                rankingQuestionsHTML += '<div class="btn-group" role="group" aria-label="' + filter + '">';
-                for (var i = 1; i <= 5; i++) {
-                    var id = filter.replace(/\s+/g, '') + '_option' + i; // Generate unique id
-                    rankingQuestionsHTML += '<input type="radio" class="btn-check" name="' + filter + '" id="' + id + '" value="' + i + '" autocomplete="off">';
-                    rankingQuestionsHTML += '<label class="btn btn-outline-primary" for="' + id + '">' + i + '</label>';
-                }
-                rankingQuestionsHTML += '</div></div>';
-            });
-
-            // After a short delay, toggle the display of filter options and rating form
-            setTimeout(function() {
-                // Hide filter options
-                filterOptions.style.display = "none";
-
-                // Show ranking form with fade-in animation
-                var rankingForm = document.getElementById("rankingForm");
-                rankingForm.classList.add('fadeIn');
-                rankingForm.style.display = "block";
-
-                // Show the explanation for rating the features
-                explanation.innerText = "Please rate the selected qualities on a scale of 1 to 5, where 1 is the least important and 5 is very important to you.";
-
-                // Fade in the new explanation text
-                explanation.style.opacity = "1";
-
-                // Add generated ranking questions to the form
-                document.getElementById('rankingQuestions').innerHTML = rankingQuestionsHTML;
-            }, 500); // Adjust this value to match the transition duration
+        function toggleNextButton() {
+        var nextBtn = document.getElementById("nextBtn");
+        var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+        var atLeastOneChecked = Array.from(checkboxes).some(function(checkbox) {
+            return checkbox.checked;
         });
+        nextBtn.disabled = !atLeastOneChecked;
+    }
+
+    // Add event listeners to checkboxes to toggle the "Next" button
+    var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+    checkboxes.forEach(function(checkbox) {
+        checkbox.addEventListener("change", toggleNextButton);
+    });
+
+    // Initially disable the "Next" button
+    toggleNextButton();
+
+    document.getElementById("nextBtn").addEventListener("click", function() {
+        // Hide filter options and explanation text with fade-out animation
+        var filterOptions = document.getElementById("filterOptions");
+        filterOptions.style.transition = "opacity 0.5s ease-in-out";
+        filterOptions.style.opacity = "0";
+
+        var explanation = document.getElementById("explanation");
+        explanation.style.transition = "opacity 0.5s ease-in-out";
+        explanation.style.opacity = "0";
+
+        // Get selected filter options
+        var selectedFilters = [];
+        var checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
+        checkboxes.forEach(function(checkbox) {
+            selectedFilters.push(checkbox.parentNode.textContent.trim()); // Get the text content of the label
+        });
+
+        // Generate ranking questions based on selected filters
+        var rankingQuestionsHTML = '';
+        selectedFilters.forEach(function(filter) {
+            rankingQuestionsHTML += '<div class="form-group">';
+            rankingQuestionsHTML += '<label>' + filter + '</label><br>'; // Display filter name
+            rankingQuestionsHTML += '<div class="btn-group" role="group" aria-label="' + filter + '">';
+            for (var i = 1; i <= 5; i++) {
+                var id = filter.replace(/\s+/g, '') + '_option' + i; // Generate unique id
+                rankingQuestionsHTML += '<input type="radio" class="btn-check" name="' + filter + '" id="' + id + '" value="' + i + '" autocomplete="off">';
+                rankingQuestionsHTML += '<label class="btn btn-outline-primary" for="' + id + '">' + i + '</label>';
+            }
+            rankingQuestionsHTML += '</div></div>';
+        });
+
+        // After a short delay, toggle the display of filter options and rating form
+        setTimeout(function() {
+            // Hide filter options
+            filterOptions.style.display = "none";
+
+            // Show ranking form with fade-in animation
+            var rankingForm = document.getElementById("rankingForm");
+            rankingForm.classList.add('fadeIn');
+            rankingForm.style.display = "block";
+
+            // Show the explanation for rating the features
+            explanation.innerText = "Please rate the selected qualities on a scale of 1 to 5, where 1 is the least important and 5 is very important to you.";
+
+            // Fade in the new explanation text
+            explanation.style.opacity = "1";
+
+            // Add generated ranking questions to the form
+            document.getElementById('rankingQuestions').innerHTML = rankingQuestionsHTML;
+        }, 500); // Adjust this value to match the transition duration
+    });
         document.getElementById("rankingForm").addEventListener("submit", function(event) {
         event.preventDefault(); // Prevent form submission
         
