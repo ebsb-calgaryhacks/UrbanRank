@@ -6,6 +6,7 @@ venv/
 secret*
 .env
 venv/
+.parcel-cache/
 
 tester*
 
