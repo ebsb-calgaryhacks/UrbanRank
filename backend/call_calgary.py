@@ -6,7 +6,7 @@ import haversine as hs
 from dotenv import load_dotenv
 import os
 
-load_dotenv("./backend/.env")
+load_dotenv(".env")
 
 client = Socrata("data.calgary.ca", os.environ.get("MyAppToken"))
 
@@ -30,7 +30,7 @@ def get_data(indicators):
 
     data = pd.DataFrame.from_records(call_calgary_api("xeek-u7v8", where = where))
 
-    return data[["communities", "indicator", "value"]]
+    return data[["communities", "indicator", "status", "quadrant"]]
 
 def get_community_points():
     """
