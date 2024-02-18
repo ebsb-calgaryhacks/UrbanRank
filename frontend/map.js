@@ -22,7 +22,9 @@ async function initMap() {
     boundaries = temp.boundaries
 
     for (const [key, coords] of Object.entries(boundaries)) {
-      drawPolygon(coords, "#FF0000")
+      drawPolygon(coords.slice(0, 3), "#FF0000")
+      console.log(coords);
+
     }
   }
 }
@@ -34,17 +36,17 @@ async function initMap() {
  */
 const drawPolygon = (coords, colour) => {
   let res = coords.map((point) => {
-    const lat = Number(point[0])
-    const lng = Number(point[1])
+    const lat = Number(point[1])
+    const lng = Number(point[0])
 
     return {
-      lat: isNaN(lat) ? 0: lat,
-      lng: isNaN(lng) ? 0: lng
+      lat: isNaN(lat) ? 0 : lat,
+      lng: isNaN(lng) ? 0 : lng
     }
   })
 
   console.log(res);
-  
+
 
 
   const polygon = new google.maps.Polygon({
