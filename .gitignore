@@ -4,4 +4,4 @@ dist/
 .cache/
 secret*
 .env
-
+venv/
