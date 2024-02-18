@@ -41,6 +41,30 @@ def get_community_points():
 
     return data[["name", "longitude", "latitude"]]
 
+def get_community_geometry():
+    """
+
+    """
+
+    data = pd.read_csv('./Community_District_Boundaries_20240217.csv')
+
+    print(data["MULTIPOLYGON"][0])
+
+    points_dict = {}
+    for index, row in data.iterrows():
+
+        points_str = row["MULTIPOLYGON"][16:-3]
+
+        points = points_str.split(',')
+
+        points_list = [string.split() for string in points]
+        
+        points_dict[row["NAME"]] = points_list
+    
+    return points_dict
+
+
+
 def get_schools():
     """
     Returns school name, boolean whether it's elementary, juniour high, or senior high, and the longitude and latitude
@@ -75,15 +99,17 @@ if __name__ == '__main__':
     # results = get_data(["BIKE SCORE"])
     # print(results)
 
-    points = get_community_points()
-    # print(points)
+    # points = get_community_points()
+    # # print(points)
 
-    schools = get_schools()
-    # print(schools)
+    # schools = get_schools()
+    # # print(schools)
 
-    community_point = (float(points['latitude'].values[0]), float(points['longitude'].values[0]))
+    # community_point = (float(points['latitude'].values[0]), float(points['longitude'].values[0]))
 
-    closest = close_schools(community_point, schools, "senior_h")
+    # closest = close_schools(community_point, schools, "senior_h")
 
-    print(community_point)
-    print(closest)
+    # print(community_point)
+    # print(closest)
+
+    get_community_geometry()
