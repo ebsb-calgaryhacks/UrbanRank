@@ -29,6 +29,62 @@ async function initMap() {
   }
 }
 
+async function getMapScores() {
+  function getUrlParams() {
+    var searchParams = new URLSearchParams(window.location.search);
+    var params = {};
+    for (let param of searchParams.entries()) {
+      params[param[0]] = param[1];
+    }
+    return params;
+  }
+
+  var urlParams = getUrlParams();
+  var queryParams = '';
+
+
+  // Add indicators to query parameters if provided in URL
+  if (urlParams['Walkability']) {
+    queryParams += '&WALK%20SCORE=' + urlParams['Walkability'];
+  }
+  if (urlParams['PublicTransportation']) {
+    queryParams += '&TRANSIT%20SCORE=' + urlParams['PublicTransportation'];
+  }
+  if (urlParams['GreenSpaces']) {
+    queryParams += '&GREEN%20SPACE%20AREA=' + urlParams['GreenSpaces'];
+  }
+  if (urlParams['BikePaths']) {
+    queryParams += '&BIKE%20SCORE=' + urlParams['BikePaths'];
+  }
+  if (urlParams['Safety']) {
+    queryParams += '&PROPERTY%20CRIME%20RATE=' + urlParams['Safety'];
+  }
+  if (urlParams['Affordability']) {
+    queryParams += '&LOW%20INCOME=' + urlParams['Affordability'];
+  }
+  // if (urlParams['ElementarySchool']) {
+  //     queryParams += '&ElementarySchool=' + urlParams['ElementarySchool'];
+  // }
+  // if (urlParams['JuniorHighSchool']) {
+  //     queryParams += '&JuniorHighSchool=' + urlParams['JuniorHighSchool'];
+  // }
+  // if (urlParams['HighSchool']) {
+  //     queryParams += '&HighSchool=' + urlParams['HighSchool'];
+  // }
+
+  // Make GET request with query parameters
+  fetch('http://127.0.0.1:5000/getCommunityScores?' + queryParams.slice(1)) // Remove leading '&'
+    .then(response => response.json())
+    .then(jsonData => {
+      // Handle the response data here
+      console.log(jsonData);
+    })
+    .catch(error => {
+      // Handle errors here
+      console.error('Error:', error);
+    });
+}
+
 /**
  * 
  * @param {Array<Array<number>>} coords An array of coordinate arrays (2 element inner arrays)
@@ -41,7 +97,7 @@ const drawPolygon = (coords, colour) => {
 
     if (isNaN(lat) || isNaN(lng)) {
       console.log(lat, lng, point[1], point[0]);
-      
+
     }
 
     return {
@@ -72,4 +128,4 @@ const drawPolygon = (coords, colour) => {
 }
 
 initMap();
-
+getMapScores();
