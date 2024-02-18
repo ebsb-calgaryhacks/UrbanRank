@@ -19,6 +19,9 @@ def hello_world():
 
 @app.route("/everything")
 def everything():
+    """
+    Test, returns total records returned
+    """
     results = call_calgary.call_calgary_api()
 
     return {'length': len(results)}
