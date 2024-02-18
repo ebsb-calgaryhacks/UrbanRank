@@ -4,14 +4,16 @@ let lat, lng;
 async function initMap() {
     const { Map } = await google.maps.importLibrary("maps");
     if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(async (geolocation) => {
-            [lat, lng] = [geolocation.coords.latitude, geolocation.coords.longitude]
+        const geolocation = await new Promise((resolve, reject) => {
+            navigator.geolocation.getCurrentPosition(resolve, reject);
+        });
 
-            map = await new Map(document.getElementById("map"), {
-                center: { lat: lat, lng: lng },
-                zoom: 5,
-            })
-        })
+        [lat, lng] = [geolocation.coords.latitude, geolocation.coords.longitude]
+
+        map = await new Map(document.getElementById("map"), {
+            center: { lat: lat, lng: lng },
+            zoom: 5,
+        })        
     }
 }
 
@@ -43,3 +45,4 @@ const drawPolygon = (coords, colour) => {
 
 
 initMap();
+
