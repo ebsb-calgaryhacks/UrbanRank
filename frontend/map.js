@@ -2,6 +2,7 @@
 var map;
 let lat, lng;
 let boundaries;
+let infoWindow;
 
 async function initMap() {
   const { Map } = await google.maps.importLibrary("maps");
@@ -59,9 +60,13 @@ const drawPolygon = (coords, colour) => {
     fillColor: colour,
     fillOpacity: 0.35,
   })
-
-
   polygon.setMap(map);
+  polygon.addListener("click", (event) => {
+    infoWindow.setContent("Sample String")
+    infoWindow.setPosition(event.latLng)
+    infoWindow.open(map)
+  })
+  infoWindow = new google.maps.InfoWindow();
 
 
 }
