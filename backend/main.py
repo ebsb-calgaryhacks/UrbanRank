@@ -25,3 +25,13 @@ def everything():
     results = call_calgary.call_calgary_api()
 
     return {'length': len(results)}
+
+@app.route("/boundaries")
+def boundaries():
+    """
+    returns 1 value, boundaries. The value is a dictionary of neighbourhoods, which has a list of latitude and longitude points for a polygon.
+    """
+
+    points = call_calgary.get_community_geometry()
+
+    return {"boundaries": points}
