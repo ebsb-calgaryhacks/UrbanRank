@@ -9,6 +9,21 @@ const BAD_COLOUR = "#FF0000"
 const AVG_COLOUR = "#3bb4f5"
 const GOOD_COLOUR = "#0cf218"
 
+const legendColours = {
+  good: {
+      name: "Great match",
+      color: GOOD_COLOUR,
+  },
+  avg: {
+      name: "Good match",
+      color: AVG_COLOUR,
+  },
+  bad: {
+      name: "Poor match",
+      color: BAD_COLOUR,
+  },
+};
+
 async function initMap() {
   const { Map } = await google.maps.importLibrary("maps");
   if (navigator.geolocation) {
@@ -31,12 +46,28 @@ async function initMap() {
 
     for (const [key, coords] of Object.entries(boundaries)) {
       const colour = scoreToColour(communityScores[key])
-
-
-
       drawPolygon(coords, colour, key)
     }
+
+    createLegend()
   }
+}
+
+async function createLegend() {
+
+  const legend = document.getElementById("legend");
+
+  for (const key in legendColours) {
+    const type = legendColours[key];
+    const name = type.name;
+    const color = type.color;
+    const div = document.createElement("div");
+
+    div.innerHTML = `<div style="display: flex; align-items: center;"><div style="width: 20px; height: 20px; background-color: ${color}; display: inline-block;"></div> <p style="padding-left: 5px;">${name}</p></div>`;
+    legend.appendChild(div);
+  }
+
+  map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(legend);
 }
 
 function scoreToColour(score) {
@@ -107,47 +138,47 @@ async function getMapScores() {
   }
 }
 
-  /**
-   * 
-   * @param {Array<Array<number>>} coords An array of coordinate arrays (2 element inner arrays)
-   * @param {String} colour A hex string
-   */
-  const drawPolygon = (coords, colour, communityName) => {
-    let res = coords.map((point) => {
-      const lat = Number(point[1])
-      const lng = Number(point[0])
+/**
+ * 
+ * @param {Array<Array<number>>} coords An array of coordinate arrays (2 element inner arrays)
+ * @param {String} colour A hex string
+ */
+const drawPolygon = (coords, colour, communityName) => {
+  let res = coords.map((point) => {
+    const lat = Number(point[1])
+    const lng = Number(point[0])
 
-      if (isNaN(lat) || isNaN(lng)) {
-        console.log(lat, lng, point[1], point[0]);
+    if (isNaN(lat) || isNaN(lng)) {
+      console.log(lat, lng, point[1], point[0]);
 
-      }
+    }
 
-      return {
-        lat: lat,
-        lng: lng
-      }
-    })
-
-
-
-    const polygon = new google.maps.Polygon({
-      path: res,
-      strokeColor: colour,
-      strokeOpacity: 0.8,
-      strokeWeight: 2,
-      fillColor: colour,
-      fillOpacity: 0.35,
-    })
-    polygon.setMap(map);
-    polygon.addListener("click", (event) => {
-      infoWindow.setContent(`<b>${communityName}</b>`)
-      infoWindow.setPosition(event.latLng)
-      infoWindow.open(map)
-    })
-    infoWindow = new google.maps.InfoWindow();
+    return {
+      lat: lat,
+      lng: lng
+    }
+  })
 
 
-  }
 
-  initMap();
+  const polygon = new google.maps.Polygon({
+    path: res,
+    strokeColor: colour,
+    strokeOpacity: 0.8,
+    strokeWeight: 2,
+    fillColor: colour,
+    fillOpacity: 0.35,
+  })
+  polygon.setMap(map);
+  polygon.addListener("click", (event) => {
+    infoWindow.setContent(`<b>${communityName}</b>`)
+    infoWindow.setPosition(event.latLng)
+    infoWindow.open(map)
+  })
+  infoWindow = new google.maps.InfoWindow();
+
+
+}
+
+initMap();
 
