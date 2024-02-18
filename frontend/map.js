@@ -22,9 +22,8 @@ async function initMap() {
     boundaries = temp.boundaries
 
     for (const [key, coords] of Object.entries(boundaries)) {
-      drawPolygon(coords.slice(0, 3), "#FF0000")
-      console.log(coords);
-
+      
+      drawPolygon(coords, "#FF0000")
     }
   }
 }
