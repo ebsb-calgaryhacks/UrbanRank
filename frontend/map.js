@@ -4,6 +4,10 @@ let lat, lng;
 let boundaries;
 let infoWindow;
 
+const BAD_COLOUR = "#FF0000"
+const AVG_COLOUR = "#34d1d1"
+const GOOD_COLOOUR = "#34d13a"
+
 async function initMap() {
   const { Map } = await google.maps.importLibrary("maps");
   if (navigator.geolocation) {
