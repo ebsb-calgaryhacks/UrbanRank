@@ -118,6 +118,26 @@
                 document.getElementById('rankingQuestions').innerHTML = rankingQuestionsHTML;
             }, 500); // Adjust this value to match the transition duration
         });
+        document.getElementById("rankingForm").addEventListener("submit", function(event) {
+        event.preventDefault(); // Prevent form submission
+        
+        // Get selected filter options and their corresponding values
+        var queryParams = new URLSearchParams();
+        var checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
+        checkboxes.forEach(function(checkbox) {
+            var filter = checkbox.parentNode.textContent.trim();
+            var radioButtons = document.querySelectorAll('input[type="radio"][name="' + filter + '"]:checked');
+            if (radioButtons.length > 0) {
+                queryParams.append(filter.replace(/\s+/g, ''), radioButtons[0].value);
+            }
+        });
+
+        // Construct URL with query parameters
+        var url = 'map.html?' + queryParams.toString();
+
+        // Navigate to map.html page with query parameters
+        window.location.href = url;
+    });
     </script>
 </body>
 </html>
