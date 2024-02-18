@@ -34,7 +34,7 @@ async function initMap() {
 
 
 
-      drawPolygon(coords, colour)
+      drawPolygon(coords, colour, key)
     }
   }
 }
@@ -112,7 +112,7 @@ async function getMapScores() {
    * @param {Array<Array<number>>} coords An array of coordinate arrays (2 element inner arrays)
    * @param {String} colour A hex string
    */
-  const drawPolygon = (coords, colour) => {
+  const drawPolygon = (coords, colour, communityName) => {
     let res = coords.map((point) => {
       const lat = Number(point[1])
       const lng = Number(point[0])
@@ -140,7 +140,7 @@ async function getMapScores() {
     })
     polygon.setMap(map);
     polygon.addListener("click", (event) => {
-      infoWindow.setContent("Sample String")
+      infoWindow.setContent(`<b>${communityName}</b>`)
       infoWindow.setPosition(event.latLng)
       infoWindow.open(map)
     })
