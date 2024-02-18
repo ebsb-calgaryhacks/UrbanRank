@@ -68,7 +68,6 @@ def getCommunityScores():
         length +=1
 
     print(df)
-    print(indicators_dict["WALK SCORE"])
     # Multiply each status number by the corresponding indicator score
     df['weighted_status'] = df.apply(lambda row: row['status'] * int(indicators_dict[row['indicator']][0]) * 0.1, axis=1)
     
