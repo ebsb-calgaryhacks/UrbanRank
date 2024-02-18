@@ -5,3 +5,5 @@ dist/
 secret*
 .env
 
+tester*
+
