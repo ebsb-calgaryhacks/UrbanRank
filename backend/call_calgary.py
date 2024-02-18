@@ -1,6 +1,8 @@
 import pandas as pd
 from sodapy import Socrata
 
+import haversine as hs
+
 from dotenv import load_dotenv
 import os
 
@@ -51,13 +53,37 @@ def get_schools():
     
     return data[["name", "elem", "junior_h", "senior_h", "longitude", "latitude"]]
 
+def close_schools(point, schools, grade):
+
+    closest = []
+
+    for index, row in schools.iterrows():
+        if row[grade] != "Y": continue
+
+        school_point = (row['latitude'], row['longitude'])
+
+        closest.append( (row, hs.haversine(point, school_point)) )
+
+        if len(closest) > 3: 
+            closest.sort(key=lambda x: x[1])
+            closest.pop()
+
+    return closest
+
 if __name__ == '__main__':
     # results = call_calgary_api(where = "INDICATOR='LOW INCOME' OR INDICATOR='BIKE SCORE'")
     # results = get_data(["BIKE SCORE"])
     # print(results)
 
     points = get_community_points()
-    print(points)
+    # print(points)
 
     schools = get_schools()
-    print(schools)
+    # print(schools)
+
+    community_point = (float(points['latitude'].values[0]), float(points['longitude'].values[0]))
+
+    closest = close_schools(community_point, schools, "senior_h")
+
+    print(community_point)
+    print(closest)
