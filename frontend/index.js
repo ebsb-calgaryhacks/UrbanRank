@@ -1,12 +1,20 @@
 let map;
+let lat, lng;
 
 async function initMap() {
-  const { Map } = await google.maps.importLibrary("maps");
+    const { Map } = await google.maps.importLibrary("maps");
+    if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(async (geolocation) => {
+            [lat, lng] = [geolocation.coords.latitude, geolocation.coords.longitude]
+            
+            map = new Map(document.getElementById("map"), {
+                center: { lat: lat, lng: lng },
+                zoom: 14,
+            }); 
+        })
+    }
+    
 
-  map = new Map(document.getElementById("map"), {
-    center: { lat: -34.397, lng: 150.644 },
-    zoom: 8,
-  });
 }
 
 initMap();
